@@ -9,8 +9,12 @@ const TransactionList = ({ onEdit, onDelete }) => {
     transactions, 
     loading, 
     error, 
+    categories,
     loadTransactions, 
+    loadCategories,
     deleteTransaction,
+    getTransactionsByType,
+    getTransactionsByCategory,
     clearError 
   } = useTransactions();
 
@@ -24,6 +28,16 @@ const TransactionList = ({ onEdit, onDelete }) => {
   useEffect(() => {
     loadTransactions(currentPage, 10, sortBy, sortDir);
   }, [currentPage, sortBy, sortDir]); // Removed loadTransactions from dependencies
+
+  // Load categories when component mounts
+  useEffect(() => {
+    loadCategories();
+  }, []); // Empty dependency array to run only once
+
+  // Debug categories
+  useEffect(() => {
+    console.log('Available categories:', categories);
+  }, [categories]);
 
   const handleSort = (field) => {
     if (sortBy === field) {
@@ -48,12 +62,34 @@ const TransactionList = ({ onEdit, onDelete }) => {
 
   const handleFilterByType = (type) => {
     setFilterType(type);
-    // You could implement filtering logic here
+    setCurrentPage(0); // Reset to first page when filtering
+    
+    if (type === '') {
+      // Load all transactions if no filter selected
+      loadTransactions(0, 10, sortBy, sortDir);
+    } else {
+      // Filter by type
+      getTransactionsByType(type);
+    }
+  };
+
+  const handleFilterByCategory = (category) => {
+    setFilterCategory(category);
+    setCurrentPage(0); // Reset to first page when filtering
+    
+    if (category === '') {
+      // Load all transactions if no filter selected
+      loadTransactions(0, 10, sortBy, sortDir);
+    } else {
+      // Filter by category
+      getTransactionsByCategory(category);
+    }
   };
 
   const clearFilters = () => {
     setFilterType('');
     setFilterCategory('');
+    setCurrentPage(0);
     loadTransactions(0, 10, sortBy, sortDir);
   };
 
@@ -107,6 +143,19 @@ const TransactionList = ({ onEdit, onDelete }) => {
             <option value="">All Types</option>
             <option value={TRANSACTION_TYPES.INCOME}>Income</option>
             <option value={TRANSACTION_TYPES.EXPENSE}>Expense</option>
+          </select>
+        </div>
+        
+        <div className="filter-group">
+          <label>Filter by Category:</label>
+          <select 
+            value={filterCategory} 
+            onChange={(e) => handleFilterByCategory(e.target.value)}
+          >
+            <option value="">All Categories</option>
+            {categories.map(category => (
+              <option key={category} value={category}>{category}</option>
+            ))}
           </select>
         </div>
         

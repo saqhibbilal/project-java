@@ -3,19 +3,12 @@ import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 
 const DashboardPage = () => {
-  const { user, logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-  };
+  const { user } = useAuth();
 
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
         <h1>Welcome to TrackSpring, {user?.username}!</h1>
-        <button onClick={handleLogout} className="logout-btn">
-          Logout
-        </button>
       </header>
       
       <main className="dashboard-main">
@@ -27,19 +20,24 @@ const DashboardPage = () => {
             <Link to="/transactions" className="feature-card-link">
               <div className="feature-card">
                 <h3>📊 Manage Transactions</h3>
-                <p>Add, edit, and view your income and expenses</p>
+                <p>Add, edit, and view your income and expenses with enhanced features</p>
               </div>
             </Link>
             
-            <div className="feature-card">
-              <h3>📈 View Reports</h3>
-              <p>See your spending patterns (Coming Soon)</p>
-            </div>
+            <Link to="/analytics" className="feature-card-link">
+              <div className="feature-card">
+                <h3>📈 Analytics Dashboard</h3>
+                <p>View detailed analytics, charts, and spending insights</p>
+              </div>
+            </Link>
             
-            <div className="feature-card">
-              <h3>🏷️ Manage Categories</h3>
-              <p>Organize your transactions (Coming Soon)</p>
-            </div>
+             
+             <Link to="/currency" className="feature-card-link">
+               <div className="feature-card">
+                 <h3>💱 Currency Conversion</h3>
+                 <p>Convert transactions between multiple currencies</p>
+               </div>
+             </Link>
           </div>
         </div>
       </main>

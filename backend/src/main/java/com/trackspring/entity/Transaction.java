@@ -36,7 +36,7 @@ public class Transaction {
 
     @Size(max = 100, message = "Category must not exceed 100 characters")
     @Column(name = "category")
-    private String category;
+    private String category; // Legacy field for backward compatibility
 
     @Size(max = 500, message = "Notes must not exceed 500 characters")
     @Column(name = "notes", length = 500)
@@ -165,4 +165,5 @@ public class Transaction {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 }

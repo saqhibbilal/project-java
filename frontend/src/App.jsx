@@ -3,12 +3,16 @@ import { AuthProvider } from './context/AuthContext';
 import { TransactionProvider } from './context/TransactionContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
+import './components/EnhancedComponents.css';
 
 // Import pages
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import TransactionsPage from './pages/TransactionsPage';
+import AnalyticsPage from './pages/AnalyticsPage';
+import CurrencyConverterPage from './pages/CurrencyConverterPage';
+import Sidebar from './components/Sidebar';
 
 function App() {
   return (
@@ -16,7 +20,9 @@ function App() {
       <TransactionProvider>
         <Router>
           <div className="App">
-            <Routes>
+            <Sidebar />
+            <div className="main-content">
+              <Routes>
               {/* Public routes */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
@@ -40,9 +46,29 @@ function App() {
                 } 
               />
               
-              {/* Default redirect */}
+                <Route
+                  path="/analytics"
+                  element={
+                    <ProtectedRoute>
+                      <AnalyticsPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                
+                
+                <Route
+                  path="/currency"
+                  element={
+                    <ProtectedRoute>
+                      <CurrencyConverterPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                
+                {/* Default redirect */}
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            </Routes>
+              </Routes>
+            </div>
           </div>
         </Router>
       </TransactionProvider>

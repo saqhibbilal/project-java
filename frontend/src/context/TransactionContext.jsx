@@ -63,7 +63,9 @@ export const TransactionProvider = ({ children }) => {
   // Load categories
   const loadCategories = async () => {
     try {
+      console.log('Loading categories in context...');
       const categoriesData = await transactionService.getCategories();
+      console.log('Categories loaded in context:', categoriesData);
       setCategories(categoriesData);
     } catch (error) {
       console.error('Error loading categories:', error);
@@ -84,6 +86,9 @@ export const TransactionProvider = ({ children }) => {
       
       // Reload summary to update totals
       await loadSummary();
+      
+      // Reload categories to include new category
+      await loadCategories();
       
       return formattedTransaction;
     } catch (error) {
@@ -112,6 +117,9 @@ export const TransactionProvider = ({ children }) => {
       
       // Reload summary to update totals
       await loadSummary();
+      
+      // Reload categories to include new category
+      await loadCategories();
       
       return formattedTransaction;
     } catch (error) {

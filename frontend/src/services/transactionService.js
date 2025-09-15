@@ -95,9 +95,12 @@ class TransactionService {
   // Get all distinct categories
   async getCategories() {
     try {
+      console.log('Fetching categories from API...');
       const response = await api.get('/transactions/categories');
+      console.log('Categories response:', response.data);
       return response.data;
     } catch (error) {
+      console.error('Error fetching categories:', error);
       const errorMessage = error.response?.data?.message || error.response?.data || error.message;
       throw new Error(errorMessage);
     }
@@ -169,6 +172,62 @@ class TransactionService {
       hour: '2-digit',
       minute: '2-digit'
     });
+  }
+
+  // Get transactions by date range
+  async getTransactionsByDateRange(startDate, endDate) {
+    try {
+      const response = await api.get('/transactions/date-range', {
+        params: {
+          startDate: startDate,
+          endDate: endDate
+        }
+      });
+      return response.data.map(transactionService.formatTransactionFromAPI);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.response?.data || error.message;
+      throw new Error(errorMessage);
+    }
+  }
+
+  // Get transactions by type and date range
+  async getTransactionsByTypeAndDateRange(type, startDate, endDate) {
+    try {
+      const response = await api.get(`/transactions/type/${type}/date-range`, {
+        params: {
+          startDate: startDate,
+          endDate: endDate
+        }
+      });
+      return response.data.map(transactionService.formatTransactionFromAPI);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.response?.data || error.message;
+      throw new Error(errorMessage);
+    }
+  }
+
+  // Get category summary analytics
+  async getCategorySummary() {
+    try {
+      const response = await api.get('/transactions/analytics/category-summary');
+      return response.data;
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.response?.data || error.message;
+      throw new Error(errorMessage);
+    }
+  }
+
+  // Get monthly trends analytics
+  async getMonthlyTrends(months = 12) {
+    try {
+      const response = await api.get('/transactions/analytics/monthly-trends', {
+        params: { months }
+      });
+      return response.data;
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.response?.data || error.message;
+      throw new Error(errorMessage);
+    }
   }
 }
 
