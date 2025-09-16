@@ -237,3 +237,10 @@ localStorage         JWT Validation         User Storage
 2. Implement Transaction CRUD operations in backend
 3. Create transaction management UI components
 4. Test complete transaction flow end-to-end
+
+Database: trackspring_db
+User: trackspring_user
+Password: trackspring_password
+Port: 5432 (standard PostgreSQL port)
+Data persistence: Volume postgres_data
+Health checks: Automatic container health monitoring

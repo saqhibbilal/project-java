@@ -14,8 +14,7 @@ const AnalyticsPage = () => {
   const [filters, setFilters] = useState({
     startDate: '',
     endDate: '',
-    type: '',
-    category: ''
+    type: ''
   });
 
   // Load data on component mount
@@ -84,10 +83,7 @@ const AnalyticsPage = () => {
         data = await transactionService.getAllTransactions();
       }
       
-      // Filter by category if specified
-      if (filters.category) {
-        data = data.filter(transaction => transaction.category === filters.category);
-      }
+      // No category filtering in analytics page
       
       setFilteredTransactions(data);
     } catch (error) {
@@ -121,8 +117,7 @@ const AnalyticsPage = () => {
     setFilters({
       startDate: '',
       endDate: '',
-      type: '',
-      category: ''
+      type: ''
     });
     loadFilteredTransactions();
   };
@@ -156,10 +151,7 @@ const AnalyticsPage = () => {
 
   const filteredSummary = calculateFilteredSummary();
 
-  // Get unique categories for filter dropdown
-  const uniqueCategories = Array.isArray(filteredTransactions) 
-    ? [...new Set(filteredTransactions.map(t => t.category))].filter(Boolean)
-    : [];
+  // No category filtering needed
 
   return (
     <div className="analytics-page">
@@ -245,22 +237,6 @@ const AnalyticsPage = () => {
             </select>
           </div>
           
-          <div className="filter-group">
-            <label htmlFor="category">Category</label>
-            <select
-              id="category"
-              name="category"
-              value={filters.category}
-              onChange={handleFilterChange}
-            >
-              <option value="">All Categories</option>
-              {uniqueCategories.map(category => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-          </div>
           
           <div className="filter-actions">
             <button onClick={applyFilters} className="btn btn-primary" disabled={loading}>
@@ -274,7 +250,7 @@ const AnalyticsPage = () => {
       </div>
 
       {/* Filtered Summary */}
-      {(filters.startDate || filters.endDate || filters.type || filters.category) && (
+      {(filters.startDate || filters.endDate || filters.type) && (
         <div className="filtered-summary">
           <h3>Filtered Results</h3>
           <div className="summary-cards">

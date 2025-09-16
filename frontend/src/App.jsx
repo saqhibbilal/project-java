@@ -12,6 +12,7 @@ import DashboardPage from './pages/DashboardPage';
 import TransactionsPage from './pages/TransactionsPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import CurrencyConverterPage from './pages/CurrencyConverterPage';
+import CalculatorPage from './pages/CalculatorPage';
 import Sidebar from './components/Sidebar';
 
 function App() {
@@ -61,6 +62,15 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <CurrencyConverterPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                
+                <Route
+                  path="/calculator"
+                  element={
+                    <ProtectedRoute>
+                      <CalculatorPage />
                     </ProtectedRoute>
                   } 
                 />

@@ -60,30 +60,32 @@ const TransactionList = ({ onEdit, onDelete }) => {
     }
   };
 
-  const handleFilterByType = (type) => {
-    setFilterType(type);
+  const applyFilters = () => {
     setCurrentPage(0); // Reset to first page when filtering
     
-    if (type === '') {
-      // Load all transactions if no filter selected
-      loadTransactions(0, 10, sortBy, sortDir);
+    if (filterType && filterCategory) {
+      // Both filters applied - need to get all transactions and filter client-side
+      loadTransactions(0, 1000, sortBy, sortDir); // Get more transactions to filter
+    } else if (filterType) {
+      // Only type filter
+      getTransactionsByType(filterType);
+    } else if (filterCategory) {
+      // Only category filter
+      getTransactionsByCategory(filterCategory);
     } else {
-      // Filter by type
-      getTransactionsByType(type);
+      // No filters
+      loadTransactions(0, 10, sortBy, sortDir);
     }
+  };
+
+  const handleFilterByType = (type) => {
+    setFilterType(type);
+    applyFilters();
   };
 
   const handleFilterByCategory = (category) => {
     setFilterCategory(category);
-    setCurrentPage(0); // Reset to first page when filtering
-    
-    if (category === '') {
-      // Load all transactions if no filter selected
-      loadTransactions(0, 10, sortBy, sortDir);
-    } else {
-      // Filter by category
-      getTransactionsByCategory(category);
-    }
+    applyFilters();
   };
 
   const clearFilters = () => {
@@ -91,6 +93,21 @@ const TransactionList = ({ onEdit, onDelete }) => {
     setFilterCategory('');
     setCurrentPage(0);
     loadTransactions(0, 10, sortBy, sortDir);
+  };
+
+  // Filter transactions based on current filters
+  const getFilteredTransactions = () => {
+    let filtered = [...transactions];
+    
+    if (filterType) {
+      filtered = filtered.filter(transaction => transaction.type === filterType);
+    }
+    
+    if (filterCategory) {
+      filtered = filtered.filter(transaction => transaction.category === filterCategory);
+    }
+    
+    return filtered;
   };
 
   const getTransactionTypeClass = (type) => {
@@ -165,7 +182,7 @@ const TransactionList = ({ onEdit, onDelete }) => {
       </div>
 
       {/* Transactions Table */}
-      {transactions.length === 0 ? (
+      {getFilteredTransactions().length === 0 ? (
         <div className="empty-state">
           <p>No transactions found. Add your first transaction to get started!</p>
         </div>
@@ -208,7 +225,7 @@ const TransactionList = ({ onEdit, onDelete }) => {
               </tr>
             </thead>
             <tbody>
-              {transactions.map((transaction) => (
+              {getFilteredTransactions().map((transaction) => (
                 <tr key={transaction.id} className="transaction-row">
                   <td className="date-cell">
                     {transactionService.formatDate(transaction.transactionDate)}

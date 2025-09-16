@@ -38,6 +38,13 @@ const DashboardPage = () => {
                  <p>Convert transactions between multiple currencies</p>
                </div>
              </Link>
+             
+             <Link to="/calculator" className="feature-card-link">
+               <div className="feature-card">
+                 <h3>🧮 Calculator</h3>
+                 <p>Quick calculations with Apple-style interface</p>
+               </div>
+             </Link>
           </div>
         </div>
       </main>
