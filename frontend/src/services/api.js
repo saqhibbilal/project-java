@@ -2,9 +2,8 @@
 import axios from 'axios';
 
 // Create axios instance with base configuration
-const baseURL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : 'http://localhost:8080/api';
+const baseURL = 'https://project-java-production-553f.up.railway.app/api';
 console.log('API Base URL:', baseURL);
-console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
 
 const api = axios.create({
   baseURL: baseURL,
